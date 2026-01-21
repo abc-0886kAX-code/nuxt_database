@@ -34,14 +34,14 @@
 
 ### 🎯 核心功能
 
-| 功能模块 | 描述 | 状态 |
-|---------|------|------|
-| 🔑 **用户认证** | JWT Token 认证机制，支持会话过期管理 | ✅ |
-| 👥 **用户管理** | 用户的增删改查，支持角色分配和状态管理 | ✅ |
-| 🛡️ **权限控制** | 基于角色的访问控制（RBAC） | ✅ |
-| 📝 **文章管理** | 文章的创建、编辑、发布、归档等功能 | ✅ |
-| 📊 **登录日志** | 记录用户登录行为，支持安全审计 | ✅ |
-| ⚙️ **系统设置** | 灵活的配置管理系统 | ✅ |
+| 功能模块        | 描述                                   | 状态 |
+| --------------- | -------------------------------------- | ---- |
+| 🔑 **用户认证** | JWT Token 认证机制，支持会话过期管理   | ✅   |
+| 👥 **用户管理** | 用户的增删改查，支持角色分配和状态管理 | ✅   |
+| 🛡️ **权限控制** | 基于角色的访问控制（RBAC）             | ✅   |
+| 📝 **文章管理** | 文章的创建、编辑、发布、归档等功能     | ✅   |
+| 📊 **登录日志** | 记录用户登录行为，支持安全审计         | ✅   |
+| ⚙️ **系统设置** | 灵活的配置管理系统                     | ✅   |
 
 #### 角色权限体系
 
@@ -69,38 +69,38 @@
 
 ### 🎨 前端技术
 
-| 技术 | 版本 | 说明 |
-|-----|------|------|
-| ![Nuxt](https://img.shields.io/badge/Nuxt-3.x-00DC82?logo=nuxt.js) | 3.x | Vue 3 全栈框架 |
-| ![Vue](https://img.shields.io/badge/Vue-3.x-4FC08D?logo=vue.js&logoColor=white) | 3.x | 渐进式 JavaScript 框架 |
-| ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white) | 5.x | JavaScript 超集，提供类型安全 |
-| ![Sass](https://img.shields.io/badge/Sass-1.x-CC6699?logo=sass&logoColor=white) | 1.x | CSS 预处理器 |
+| 技术                                                                                              | 版本 | 说明                          |
+| ------------------------------------------------------------------------------------------------- | ---- | ----------------------------- |
+| ![Nuxt](https://img.shields.io/badge/Nuxt-3.x-00DC82?logo=nuxt.js)                                | 3.x  | Vue 3 全栈框架                |
+| ![Vue](https://img.shields.io/badge/Vue-3.x-4FC08D?logo=vue.js&logoColor=white)                   | 3.x  | 渐进式 JavaScript 框架        |
+| ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white) | 5.x  | JavaScript 超集，提供类型安全 |
+| ![Sass](https://img.shields.io/badge/Sass-1.x-CC6699?logo=sass&logoColor=white)                   | 1.x  | CSS 预处理器                  |
 
 ### 🔧 后端技术
 
-| 技术 | 版本 | 说明 |
-|-----|------|------|
-| ![Nitro](https://img.shields.io/badge/Nitro-Latest-00DC82?logo=nuxt.js) | Latest | Nuxt 3 服务端引擎 |
-| ![MySQL](https://img.shields.io/badge/MySQL-8.0+-4479A1?logo=mysql&logoColor=white) | 8.0+ | 关系型数据库 |
-| ![mysql2](https://img.shields.io/badge/mysql2-3.x-4479A1?logo=mysql&logoColor=white) | 3.x | MySQL 驱动，支持 Promise |
+| 技术                                                                                 | 版本   | 说明                     |
+| ------------------------------------------------------------------------------------ | ------ | ------------------------ |
+| ![Nitro](https://img.shields.io/badge/Nitro-Latest-00DC82?logo=nuxt.js)              | Latest | Nuxt 3 服务端引擎        |
+| ![MySQL](https://img.shields.io/badge/MySQL-8.0+-4479A1?logo=mysql&logoColor=white)  | 8.0+   | 关系型数据库             |
+| ![mysql2](https://img.shields.io/badge/mysql2-3.x-4479A1?logo=mysql&logoColor=white) | 3.x    | MySQL 驱动，支持 Promise |
 
 ### 🔒 安全技术
 
-| 技术 | 说明 |
-|-----|------|
-| ![bcryptjs](https://img.shields.io/badge/bcryptjs-3.x-000000?logo=javascript) | 密码加密（10轮加盐） |
-| ![JWT](https://img.shields.io/badge/JWT-Authenticated-000000?logo=jsonwebtokens) | 身份认证 |
-| 🛡️ 参数化查询 | SQL 注入防护 |
+| 技术                                                                             | 说明                 |
+| -------------------------------------------------------------------------------- | -------------------- |
+| ![bcryptjs](https://img.shields.io/badge/bcryptjs-3.x-000000?logo=javascript)    | 密码加密（10轮加盐） |
+| ![JWT](https://img.shields.io/badge/JWT-Authenticated-000000?logo=jsonwebtokens) | 身份认证             |
+| 🛡️ 参数化查询                                                                    | SQL 注入防护         |
 
 ## 🚀 快速开始
 
 ### 📋 环境要求
 
-| 依赖 | 版本要求 | 说明 |
-|-----|---------|------|
-| ![Node.js](https://img.shields.io/badge/Node.js->=18.0.0-339933?logo=node.js) | >= 18.0.0 | JavaScript 运行环境 |
-| ![MySQL](https://img.shields.io/badge/MySQL->=8.0-4479A1?logo=mysql&logoColor=white) | >= 8.0 | 关系型数据库 |
-| ![npm](https://img.shields.io/badge/npm->=9.0.0-CB3837?logo=npm) | >= 9.0.0 | 包管理器 |
+| 依赖                                                                                 | 版本要求  | 说明                |
+| ------------------------------------------------------------------------------------ | --------- | ------------------- |
+| ![Node.js](https://img.shields.io/badge/Node.js->=18.0.0-339933?logo=node.js)        | >= 18.0.0 | JavaScript 运行环境 |
+| ![MySQL](https://img.shields.io/badge/MySQL->=8.0-4479A1?logo=mysql&logoColor=white) | >= 8.0    | 关系型数据库        |
+| ![npm](https://img.shields.io/badge/npm->=9.0.0-CB3837?logo=npm)                     | >= 9.0.0  | 包管理器            |
 
 ### 📦 安装步骤
 
@@ -174,11 +174,11 @@ npm run dev
 
 ### 🔑 默认账号
 
-| 字段 | 值 |
-|-----|-----|
-| 用户名 | `cs` |
-| 密码 | `123456` |
-| 角色 | 👑 管理员 |
+| 字段   | 值        |
+| ------ | --------- |
+| 用户名 | `admin`   |
+| 密码   | `123456`  |
+| 角色   | 👑 管理员 |
 
 > ⚠️ **安全提示**：首次登录后请立即修改密码！
 
@@ -230,39 +230,39 @@ nuxt_database/
 
 ### 🔐 认证接口
 
-| 方法 | 端点 | 描述 | 认证 |
-|-----|------|------|------|
-| POST | `/api/login` | 用户登录 | ❌ |
-| POST | `/api/register` | 用户注册 | ❌ |
+| 方法 | 端点            | 描述     | 认证 |
+| ---- | --------------- | -------- | ---- |
+| POST | `/api/login`    | 用户登录 | ❌   |
+| POST | `/api/register` | 用户注册 | ❌   |
 
 ### 👥 用户管理
 
-| 方法 | 端点 | 描述 | 认证 | 权限 |
-|-----|------|------|------|------|
-| GET | `/api/users` | 获取用户列表 | ✅ | 所有角色 |
-| POST | `/api/users` | 创建用户 | ✅ | 管理员 |
-| PUT | `/api/users/{id}` | 更新用户 | ✅ | 管理员/本人 |
-| DELETE | `/api/users/{id}` | 删除用户 | ✅ | 管理员 |
-| PATCH | `/api/users/{id}/status` | 更新用户状态 | ✅ | 管理员 |
+| 方法   | 端点                     | 描述         | 认证 | 权限        |
+| ------ | ------------------------ | ------------ | ---- | ----------- |
+| GET    | `/api/users`             | 获取用户列表 | ✅   | 所有角色    |
+| POST   | `/api/users`             | 创建用户     | ✅   | 管理员      |
+| PUT    | `/api/users/{id}`        | 更新用户     | ✅   | 管理员/本人 |
+| DELETE | `/api/users/{id}`        | 删除用户     | ✅   | 管理员      |
+| PATCH  | `/api/users/{id}/status` | 更新用户状态 | ✅   | 管理员      |
 
 ### 📝 文章管理
 
-| 方法 | 端点 | 描述 | 认证 | 权限 |
-|-----|------|------|------|------|
-| GET | `/api/posts` | 获取文章列表 | ✅ | 所有角色 |
-| GET | `/api/posts/{id}` | 获取文章详情 | ✅ | 所有角色 |
-| POST | `/api/posts` | 创建文章 | ✅ | 管理员/编辑 |
-| PUT | `/api/posts/{id}` | 更新文章 | ✅ | 作者/管理员 |
-| DELETE | `/api/posts/{id}` | 删除文章 | ✅ | 作者/管理员 |
+| 方法   | 端点              | 描述         | 认证 | 权限        |
+| ------ | ----------------- | ------------ | ---- | ----------- |
+| GET    | `/api/posts`      | 获取文章列表 | ✅   | 所有角色    |
+| GET    | `/api/posts/{id}` | 获取文章详情 | ✅   | 所有角色    |
+| POST   | `/api/posts`      | 创建文章     | ✅   | 管理员/编辑 |
+| PUT    | `/api/posts/{id}` | 更新文章     | ✅   | 作者/管理员 |
+| DELETE | `/api/posts/{id}` | 删除文章     | ✅   | 作者/管理员 |
 
 ### ⚙️ 系统管理
 
-| 方法 | 端点 | 描述 | 认证 | 权限 |
-|-----|------|------|------|------|
-| GET | `/api/login-logs` | 获取登录日志 | ✅ | 管理员 |
-| GET | `/api/settings` | 获取系统设置 | ❌ | 公开 |
-| PUT | `/api/settings` | 更新系统设置 | ✅ | 管理员 |
-| GET | `/api/stats` | 获取统计数据 | ❌ | 公开 |
+| 方法 | 端点              | 描述         | 认证 | 权限   |
+| ---- | ----------------- | ------------ | ---- | ------ |
+| GET  | `/api/login-logs` | 获取登录日志 | ✅   | 管理员 |
+| GET  | `/api/settings`   | 获取系统设置 | ❌   | 公开   |
+| PUT  | `/api/settings`   | 更新系统设置 | ✅   | 管理员 |
+| GET  | `/api/stats`      | 获取统计数据 | ❌   | 公开   |
 
 📖 **详细的 API 文档**：请参考 [后端.md](./后端.md)
 
@@ -276,12 +276,12 @@ nuxt_database/
 
 ### 📝 命名规范
 
-| 类型 | 规范 | 示例 |
-|-----|------|------|
-| 文件名 | kebab-case | `user-list.vue` |
-| 组件名 | PascalCase | `UserList.vue` |
-| 变量名 | camelCase | `userName` |
-| 常量名 | UPPER_SNAKE_CASE | `MAX_USERS` |
+| 类型   | 规范             | 示例            |
+| ------ | ---------------- | --------------- |
+| 文件名 | kebab-case       | `user-list.vue` |
+| 组件名 | PascalCase       | `UserList.vue`  |
+| 变量名 | camelCase        | `userName`      |
+| 常量名 | UPPER_SNAKE_CASE | `MAX_USERS`     |
 
 ### ⚡ 常用命令
 
@@ -367,33 +367,33 @@ pm2 logs nuxt-app
 
 ### 📊 数据表
 
-| 表名 | 说明 | 主要字段 |
-|-----|------|---------|
-| 👥 **users** | 用户表 | id, username, email, password, role, status |
-| 📝 **posts** | 文章表 | id, title, content, author_id, status |
-| ⚙️ **settings** | 系统设置表 | key_name, value, description |
-| 📋 **login_logs** | 登录日志表 | user_id, username, ip_address, login_time |
+| 表名              | 说明       | 主要字段                                    |
+| ----------------- | ---------- | ------------------------------------------- |
+| 👥 **users**      | 用户表     | id, username, email, password, role, status |
+| 📝 **posts**      | 文章表     | id, title, content, author_id, status       |
+| ⚙️ **settings**   | 系统设置表 | key_name, value, description                |
+| 📋 **login_logs** | 登录日志表 | user_id, username, ip_address, login_time   |
 
 ### 🔧 数据库配置
 
-| 配置项 | 值 |
-|--------|-----|
-| 数据库名 | `nuxt_app` |
-| 字符集 | `utf8mb4` |
+| 配置项   | 值                   |
+| -------- | -------------------- |
+| 数据库名 | `nuxt_app`           |
+| 字符集   | `utf8mb4`            |
 | 排序规则 | `utf8mb4_unicode_ci` |
-| 最小版本 | MySQL 8.0+ |
+| 最小版本 | MySQL 8.0+           |
 
 ## 🔒 安全机制
 
-| 安全措施 | 实现方式 | 说明 |
-|---------|---------|------|
-| 🔐 **密码加密** | bcrypt 10轮加盐 | 防止密码泄露 |
-| 🛡️ **SQL 注入防护** | 参数化查询 | 防止恶意 SQL 注入 |
-| 🔑 **身份认证** | JWT Token | 无状态身份验证 |
-| ⏰ **会话管理** | 60分钟超时 | 自动过期保护 |
-| ✅ **输入验证** | 邮箱、用户名检查 | 防止非法输入 |
-| 🚦 **权限控制** | RBAC | 基于角色的访问控制 |
-| 📝 **审计日志** | 登录日志记录 | 追溯用户行为 |
+| 安全措施            | 实现方式         | 说明               |
+| ------------------- | ---------------- | ------------------ |
+| 🔐 **密码加密**     | bcrypt 10轮加盐  | 防止密码泄露       |
+| 🛡️ **SQL 注入防护** | 参数化查询       | 防止恶意 SQL 注入  |
+| 🔑 **身份认证**     | JWT Token        | 无状态身份验证     |
+| ⏰ **会话管理**     | 60分钟超时       | 自动过期保护       |
+| ✅ **输入验证**     | 邮箱、用户名检查 | 防止非法输入       |
+| 🚦 **权限控制**     | RBAC             | 基于角色的访问控制 |
+| 📝 **审计日志**     | 登录日志记录     | 追溯用户行为       |
 
 ## ❓ 常见问题
 
@@ -401,6 +401,7 @@ pm2 logs nuxt-app
 <summary><b>🔗 数据库连接失败</b></summary>
 
 **解决方案**：
+
 - 检查 `.env` 文件中的数据库配置
 - 确认 MySQL 服务是否启动
 - 验证用户名和密码是否正确
@@ -434,6 +435,7 @@ PORT=3001 npm run dev
 <summary><b>🔑 Token 过期问题</b></summary>
 
 **解决方案**：
+
 - 检查系统设置中的 `sessionTimeout` 配置
 - 清除浏览器 localStorage
 - 确认客户端系统时间是否正确
