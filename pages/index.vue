@@ -9,7 +9,10 @@ definePageMeta({
   layout: 'default'
 })
 
-import type { StatsData } from '~/types/api'
+import type { StatsData, UserInfo } from '~/types/api'
+
+// 获取用户信息
+const userInfo = ref<UserInfo | null>(null)
 
 // 快速统计数据
 const quickStats = ref<StatsData>({
@@ -21,6 +24,41 @@ const quickStats = ref<StatsData>({
 
 // 加载状态
 const loading = ref(false)
+
+// 角色文案配置
+const roleMessages: Record<string, { title: string; subtitle: string }> = {
+  '管理员': {
+    title: '管理员',
+    subtitle: '这是您的管理控制台，可以快速查看系统概况和访问各项功能'
+  },
+  '超级管理员': {
+    title: '超级管理员',
+    subtitle: '欢迎回到系统管理中心，您拥有最高权限，可以管理所有系统功能和用户'
+  },
+  '普通用户': {
+    title: '用户',
+    subtitle: '欢迎回来，这里是您的个人中心，可以查看和编辑您的信息'
+  },
+  '编辑': {
+    title: '编辑',
+    subtitle: '欢迎回来，您可以在这里管理文章内容和发布新文章'
+  },
+  '访客': {
+    title: '访客',
+    subtitle: '欢迎访问我们的系统，您可以浏览公开的内容'
+  }
+}
+
+// 计算角色显示的文案
+const roleTitle = computed(() => {
+  if (!userInfo.value?.role) return '用户'
+  return roleMessages[userInfo.value.role]?.title || userInfo.value.role
+})
+
+const roleSubtitle = computed(() => {
+  if (!userInfo.value?.role) return '欢迎回来'
+  return roleMessages[userInfo.value.role]?.subtitle || '欢迎回来'
+})
 
 // 获取首页数据
 const fetchHomeData = async () => {
@@ -38,8 +76,23 @@ const fetchHomeData = async () => {
   }
 }
 
+// 从 localStorage 获取用户信息
+const loadUserInfo = () => {
+  if (import.meta.client) {
+    const userInfoStr = localStorage.getItem('userInfo')
+    if (userInfoStr) {
+      try {
+        userInfo.value = JSON.parse(userInfoStr)
+      } catch (e) {
+        console.error('解析用户信息失败:', e)
+      }
+    }
+  }
+}
+
 // 页面加载时获取数据
 onMounted(() => {
+  loadUserInfo()
   fetchHomeData()
 })
 </script>
@@ -50,8 +103,8 @@ onMounted(() => {
     <div class="welcome-banner">
       <div class="banner-content">
         <div class="banner-text">
-          <h1>欢迎回来，管理员！</h1>
-          <p class="banner-subtitle">这是您的管理控制台，可以快速查看系统概况和访问各项功能</p>
+          <h1>欢迎回来，{{ roleTitle }}！</h1>
+          <p class="banner-subtitle">{{ roleSubtitle }}</p>
         </div>
         <div class="banner-decoration">
           <div class="circle circle-1"></div>
