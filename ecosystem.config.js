@@ -1,9 +1,9 @@
 /*
- * @FilePath: /nuxt_database/ecosystem.config.js
+ * @FilePath: /nuxt_database/ecosystem 2.config.js
  * @Author: abc-0886kAX-code
  * @Date: 2026-01-16 13:28:40
  * @LastEditors: abc-0886kAX-code
- * @LastEditTime: 2026-01-21 10:05:57
+ * @LastEditTime: 2026-01-23 17:08:52
  * @Description: PM2进程管理配置
  */
 module.exports = {
@@ -17,6 +17,7 @@ module.exports = {
       args: 'start',
       error_file: './err.log', // 错误日志存放地址
       out_file: './out.log', // 输出日志存放地址
+      "log_date_format": "YYYY-MM-DD HH:mm Z", // 日志日期格式
       env: {
         // 数据库配置
         DB_HOST: 'localhost',
@@ -25,7 +26,7 @@ module.exports = {
         DB_PASSWORD: 991113,
         DB_NAME: 'nuxt_app',
         // 应用配置
-        NODE_ENv: 'production',
+        NODE_ENV: 'production',
       },
     },
   ],

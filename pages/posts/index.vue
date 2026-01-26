@@ -2,7 +2,7 @@
   <div class="posts-page">
     <div class="page-header">
       <h1>文章管理</h1>
-      <button @click="showCreateModal = true" class="btn-primary">
+      <button @click="openCreateModal" class="btn-primary">
         <span class="icon">+</span>
         新建文章
       </button>
@@ -81,28 +81,14 @@
         >
           <div class="post-main">
             <h3 class="post-title">{{ post.title }}</h3>
-            <p class="post-excerpt">{{ post.excerpt || post.content.substring(0, 150) + '...' }}</p>
             <div class="post-meta">
-              <span class="meta-item">
-                <span class="icon">👤</span>
-                {{ post.author_name }}
-              </span>
               <span class="meta-item" v-if="post.category">
                 <span class="icon">📁</span>
                 {{ post.category }}
               </span>
               <span class="meta-item">
-                <span class="icon">👁️</span>
-                {{ post.view_count || 0 }} 次浏览
-              </span>
-              <span class="meta-item">
                 <span class="icon">📅</span>
                 {{ formatDate(post.created_at) }}
-              </span>
-            </div>
-            <div class="post-tags" v-if="post.tags">
-              <span v-for="tag in post.tags.split(',')" :key="tag" class="tag">
-                {{ tag.trim() }}
               </span>
             </div>
           </div>
@@ -111,6 +97,9 @@
             <span class="status-badge" :class="post.status">
               {{ getStatusText(post.status) }}
             </span>
+            <button @click="viewPost(post.id)" class="btn-icon" title="查看详情">
+              👁️
+            </button>
             <button @click="editPost(post)" class="btn-icon" title="编辑">
               ✏️
             </button>
@@ -144,101 +133,115 @@
     </div>
 
     <!-- 创建/编辑文章模态框 -->
-    <div v-if="showCreateModal || showEditModal" class="modal-overlay" @click.self="closeModal">
-      <div class="modal-content post-modal">
-        <div class="modal-header">
-          <h2>{{ showEditModal ? '编辑文章' : '新建文章' }}</h2>
-          <button @click="closeModal" class="btn-close">×</button>
+    <Modal
+      v-model="showCreateModal"
+      :title="showEditModal ? '编辑文章' : '新建文章'"
+      size="full"
+    >
+      <form id="postForm" @submit.prevent="savePost" class="post-form">
+        <div class="form-group">
+          <label>标题 *</label>
+          <input
+            v-model="formData.title"
+            type="text"
+            required
+            placeholder="请输入文章标题"
+            class="form-input"
+          />
         </div>
 
-        <form @submit.prevent="savePost" class="post-form">
+        <div class="form-group">
+          <label>摘要</label>
+          <textarea
+            v-model="formData.excerpt"
+            rows="2"
+            placeholder="请输入文章摘要（可选）"
+            class="form-textarea"
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>内容 * <span class="label-tip">（支持 Markdown 格式）</span></label>
+          <MarkdownEditor
+            v-model="formData.content"
+          />
+        </div>
+
+        <div class="form-row">
           <div class="form-group">
-            <label>标题 *</label>
-            <input
-              v-model="formData.title"
-              type="text"
-              required
-              placeholder="请输入文章标题"
-              class="form-input"
-            />
-          </div>
-
-          <div class="form-group">
-            <label>摘要</label>
-            <textarea
-              v-model="formData.excerpt"
-              rows="2"
-              placeholder="请输入文章摘要（可选）"
-              class="form-textarea"
-            ></textarea>
-          </div>
-
-          <div class="form-group">
-            <label>内容 *</label>
-            <textarea
-              v-model="formData.content"
-              rows="10"
-              required
-              placeholder="请输入文章内容"
-              class="form-textarea"
-            ></textarea>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>分类</label>
-              <select
-                v-model="formData.category"
-                class="form-select"
-              >
-                <option value="">请选择分类</option>
-                <option value="技术">技术</option>
-                <option value="生活">生活</option>
-                <option value="随笔">随笔</option>
-                <option value="教程">教程</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>标签</label>
-              <select
-                v-model="formData.tags"
-                class="form-select"
-              >
-                <option value="">请选择标签</option>
-                <option value="前端">前端</option>
-                <option value="后端">后端</option>
-                <option value="数据库">数据库</option>
-                <option value="算法">算法</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>状态</label>
-            <select v-model="formData.status" class="form-select">
-              <option value="draft">草稿</option>
-              <option value="published">发布</option>
-              <option value="archived">归档</option>
+            <label>分类</label>
+            <select
+              v-model="formData.category"
+              class="form-select"
+            >
+              <option value="">请选择分类</option>
+              <option value="技术">技术</option>
+              <option value="生活">生活</option>
+              <option value="随笔">随笔</option>
+              <option value="教程">教程</option>
             </select>
           </div>
 
-          <div class="form-actions">
-            <button type="button" @click="closeModal" class="btn-secondary">
-              取消
-            </button>
-            <button type="submit" class="btn-primary">
-              {{ showEditModal ? '保存修改' : '创建文章' }}
-            </button>
+          <div class="form-group">
+            <label>标签</label>
+            <select
+              v-model="formData.tags"
+              class="form-select"
+            >
+              <option value="">请选择标签</option>
+              <option value="前端">前端</option>
+              <option value="后端">后端</option>
+              <option value="数据库">数据库</option>
+              <option value="算法">算法</option>
+            </select>
           </div>
-        </form>
-      </div>
-    </div>
+        </div>
+
+        <div class="form-group">
+          <label>状态</label>
+          <select v-model="formData.status" class="form-select">
+            <option value="draft">草稿</option>
+            <option value="published">发布</option>
+            <option value="archived">归档</option>
+          </select>
+        </div>
+      </form>
+
+      <template #footer>
+        <button type="button" @click="closeModal" class="btn-secondary">
+          取消
+        </button>
+        <button type="button" @click="previewPost" class="btn-secondary" :disabled="!formData.content">
+          预览
+        </button>
+        <button type="submit" form="postForm" class="btn-primary">
+          {{ showEditModal ? '保存修改' : '创建文章' }}
+        </button>
+      </template>
+    </Modal>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
+import { marked } from 'marked'
+import hljs from 'highlight.js'
+import 'highlight.js/styles/github.css'
+
+// 配置 marked
+marked.setOptions({
+  highlight: function (code, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return hljs.highlight(code, { language: lang }).value
+      } catch (__) {}
+    }
+    return hljs.highlightAuto(code).value
+  },
+  langPrefix: 'hljs language-',
+  breaks: true,
+  gfm: true
+})
 
 // 响应式数据
 const posts = ref([])
@@ -329,6 +332,27 @@ const handleSearch = () => {
   }, 500)
 }
 
+// 查看文章详情
+const viewPost = (postId) => {
+  navigateTo(`/posts/${postId}`)
+}
+
+// 打开新建文章模态框
+const openCreateModal = () => {
+  // 重置表单数据
+  currentPostId.value = null
+  formData.value = {
+    title: '',
+    content: '',
+    excerpt: '',
+    category: '',
+    tags: '',
+    status: 'draft'
+  }
+  showEditModal.value = false
+  showCreateModal.value = true
+}
+
 // 编辑文章
 const editPost = (post) => {
   currentPostId.value = post.id
@@ -341,7 +365,15 @@ const editPost = (post) => {
     status: post.status
   }
   showEditModal.value = true
+  showCreateModal.value = true
 }
+
+// 监听编辑模态框关闭
+watch(showEditModal, (newValue) => {
+  if (!newValue) {
+    showCreateModal.value = false
+  }
+})
 
 // 保存文章
 const savePost = async () => {
@@ -426,6 +458,75 @@ const getStatusText = (status) => {
     archived: '已归档'
   }
   return statusMap[status] || status
+}
+
+// 预览文章
+const previewPost = () => {
+  if (!formData.value.content) return
+
+  // 渲染 markdown 内容
+  const renderedContent = marked(formData.value.content || '')
+
+  // 打开新窗口预览
+  const previewWindow = window.open('', '_blank')
+  previewWindow.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <title>${formData.value.title || '无标题'} - 预览</title>
+      <style>
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+          line-height: 1.6;
+          color: #333;
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 40px 20px;
+          background: #f9fafb;
+        }
+        .preview-container {
+          background: white;
+          padding: 40px;
+          border-radius: 12px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 { font-size: 2.5em; margin-bottom: 0.5em; border-bottom: 1px solid #eee; padding-bottom: 0.3em; }
+        h2 { font-size: 2em; margin-top: 1.5em; margin-bottom: 0.5em; border-bottom: 1px solid #eee; padding-bottom: 0.3em; }
+        h3 { font-size: 1.5em; margin-top: 1.2em; margin-bottom: 0.5em; }
+        .meta { color: #666; margin-bottom: 2em; padding-bottom: 1em; border-bottom: 1px solid #eee; }
+        .meta-item { margin-right: 20px; }
+        p { margin-bottom: 1em; }
+        img { max-width: 100%; border-radius: 8px; }
+        pre { background: #f6f8fa; padding: 16px; border-radius: 8px; overflow-x: auto; margin-bottom: 1em; }
+        code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        pre code { background: none; padding: 0; }
+        blockquote { border-left: 4px solid #667eea; padding-left: 16px; color: #666; margin: 1em 0; }
+        table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+        th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+        th { background: #f9fafb; font-weight: 600; }
+        ul, ol { margin-bottom: 1em; padding-left: 24px; }
+        a { color: #667eea; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+      </style>
+    </head>
+    <body>
+      <div class="preview-container">
+        <h1>${formData.value.title || '无标题'}</h1>
+        <div class="meta">
+          <span class="meta-item">👤 ${currentPostId.value ? formData.value.author_name || '作者' : '当前用户'}</span>
+          ${formData.value.category ? `<span class="meta-item">📁 ${formData.value.category}</span>` : ''}
+          <span class="meta-item">📅 ${new Date().toLocaleDateString('zh-CN')}</span>
+        </div>
+        ${formData.value.excerpt ? `<p style="font-size: 1.1em; color: #666; font-style: italic; margin-bottom: 2em;">${formData.value.excerpt}</p>` : ''}
+        <div class="content">
+          ${renderedContent}
+        </div>
+      </div>
+    </body>
+    </html>
+  `)
+  previewWindow.document.close()
 }
 
 // 页面加载时获取数据
@@ -625,16 +726,16 @@ onMounted(() => {
 .posts-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .post-item {
   background: white;
   border-radius: 12px;
-  padding: 20px;
+  padding: 16px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   transition: all 0.3s;
@@ -664,24 +765,16 @@ onMounted(() => {
 }
 
 .post-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   color: #1f2937;
-  margin-bottom: 8px;
-}
-
-.post-excerpt {
-  color: #6b7280;
-  font-size: 14px;
-  line-height: 1.6;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
 }
 
 .post-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 12px;
+  gap: 12px;
 }
 
 .meta-item {
@@ -694,22 +787,6 @@ onMounted(() => {
 
 .meta-item .icon {
   font-size: 14px;
-}
-
-.post-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.tag {
-  display: inline-block;
-  padding: 4px 12px;
-  background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-  color: #667eea;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
 }
 
 .post-actions {
@@ -798,77 +875,9 @@ onMounted(() => {
   color: #6b7280;
 }
 
-/* 模态框 */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 20px;
-}
-
-.modal-content {
-  background: white;
-  border-radius: 16px;
-  max-width: 800px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-  animation: slideUp 0.3s ease;
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 24px;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.modal-header h2 {
-  font-size: 20px;
-  font-weight: 600;
-  color: #1f2937;
-  margin: 0;
-}
-
-.btn-close {
-  width: 32px;
-  height: 32px;
-  border: none;
-  background: #f3f4f6;
-  border-radius: 8px;
-  font-size: 24px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s;
-}
-
-.btn-close:hover {
-  background: #e5e7eb;
-}
-
+/* 表单样式 */
 .post-form {
-  padding: 24px;
+  padding: 0;
   max-width: 100%;
   box-sizing: border-box;
 }
@@ -885,6 +894,13 @@ onMounted(() => {
   font-weight: 500;
   color: #374151;
   margin-bottom: 6px;
+}
+
+.label-tip {
+  font-size: 12px;
+  font-weight: 400;
+  color: #9ca3af;
+  margin-left: 4px;
 }
 
 .form-input,
@@ -928,31 +944,6 @@ onMounted(() => {
   }
 }
 
-.form-actions {
-  display: flex;
-  gap: 12px;
-  justify-content: flex-end;
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid #e5e7eb;
-}
-
-.btn-secondary {
-  padding: 10px 20px;
-  border: 1px solid #e5e7eb;
-  background: white;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.btn-secondary:hover {
-  background: #f9fafb;
-  border-color: #d1d5db;
-}
-
 /* 响应式设计 */
 @media (max-width: 768px) {
   .posts-page {
@@ -985,30 +976,26 @@ onMounted(() => {
   }
 
   .post-item {
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    padding: 12px;
+  }
+
+  .post-title {
+    font-size: 14px;
+  }
+
+  .post-meta {
+    gap: 8px;
+  }
+
+  .meta-item {
+    font-size: 12px;
   }
 
   .post-actions {
-    width: 100%;
-    justify-content: flex-end;
-    padding-top: 12px;
-    border-top: 1px solid #f3f4f6;
-  }
-
-  .modal-content {
-    max-height: 95vh;
-  }
-
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-
-  .form-actions {
-    flex-direction: column;
-  }
-
-  .form-actions button {
-    width: 100%;
+    padding-top: 0;
+    border-top: none;
   }
 }
 </style>

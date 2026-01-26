@@ -38,8 +38,12 @@ export default defineNuxtPlugin(() => {
         }
 
         // 确保有 Content-Type（如果是 POST/PUT/PATCH 请求）
+        // 但不要覆盖 FormData 请求的 Content-Type（浏览器会自动设置 multipart/form-data）
         const method = (init.method || 'GET').toUpperCase()
-        if (['POST', 'PUT', 'PATCH'].includes(method) && !(init.headers as Record<string, string>)['Content-Type']) {
+        const isFormData = init.body instanceof FormData
+        if (['POST', 'PUT', 'PATCH'].includes(method) &&
+            !(init.headers as Record<string, string>)['Content-Type'] &&
+            !isFormData) {
           (init.headers as Record<string, string>)['Content-Type'] = 'application/json'
         }
       }
