@@ -21,3 +21,6 @@ node_modules
 
 # upload files
 uploads
+
+# pm2 config
+ecosystem.config.js

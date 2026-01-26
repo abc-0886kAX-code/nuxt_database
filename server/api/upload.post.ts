@@ -3,7 +3,7 @@
  * @Author: abc-0886kAX-code
  * @Date: 2026-01-26 10:55:09
  * @LastEditors: abc-0886kAX-code
- * @LastEditTime: 2026-01-26 13:14:36
+ * @LastEditTime: 2026-01-26 13:22:39
  * @Description: 
  */
 import fs from 'fs'
@@ -71,7 +71,7 @@ export default defineEventHandler(async (event) => {
       success: true,
       message: '上传成功',
       data: {
-        url: isPro ? `http://152.136.167.65:8888/uploads/${newFilename}` : `/uploads/${newFilename}`,
+        url: isPro ? `${process.env.UPLOAD_ADRES}/uploads/${newFilename}` : `/uploads/${newFilename}`,
         filename: newFilename,
         size: buffer.length,
         originalName: filename
