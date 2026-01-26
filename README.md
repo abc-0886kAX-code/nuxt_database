@@ -18,9 +18,9 @@
 
 <div align="center">
 
-[![在线演示](https://img.shields.io/badge/🌐-在线演示-00DC82?style=for-the-badge)](http://your-domain-or-ip:8086/login)
+[![在线演示](https://img.shields.io/badge/🌐-在线演示-00DC82?style=for-the-badge)](http://152.136.167.65:8086/login)
 
-**👉 点击访问：http://your-domain-or-ip:8086/login**
+**👉 点击访问：http://152.136.167.65:8086/login**
 
 </div>
 
