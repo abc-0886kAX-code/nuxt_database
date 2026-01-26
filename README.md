@@ -18,9 +18,9 @@
 
 <div align="center">
 
-[![在线演示](https://img.shields.io/badge/🌐-在线演示-00DC82?style=for-the-badge)](http://152.136.167.65:8086/login)
+[![在线演示](https://img.shields.io/badge/🌐-在线演示-00DC82?style=for-the-badge)](http://your-domain-or-ip:8086/login)
 
-**👉 点击访问：http://152.136.167.65:8086/login**
+**👉 点击访问：http://your-domain-or-ip:8086/login**
 
 </div>
 
@@ -40,6 +40,7 @@
 | 👥 **用户管理** | 用户的增删改查，支持角色分配和状态管理 | ✅   |
 | 🛡️ **权限控制** | 基于角色的访问控制（RBAC）             | ✅   |
 | 📝 **文章管理** | 文章的创建、编辑、发布、归档等功能     | ✅   |
+| 📷 **图片上传** | 支持图片上传，自动生成唯一文件名       | ✅   |
 | 📊 **登录日志** | 记录用户登录行为，支持安全审计         | ✅   |
 | ⚙️ **系统设置** | 灵活的配置管理系统                     | ✅   |
 
@@ -259,6 +260,7 @@ nuxt_database/
 
 | 方法 | 端点              | 描述         | 认证 | 权限   |
 | ---- | ----------------- | ------------ | ---- | ------ |
+| POST | `/api/upload`     | 上传图片     | ❌   | 公开   |
 | GET  | `/api/login-logs` | 获取登录日志 | ✅   | 管理员 |
 | GET  | `/api/settings`   | 获取系统设置 | ❌   | 公开   |
 | PUT  | `/api/settings`   | 更新系统设置 | ✅   | 管理员 |
