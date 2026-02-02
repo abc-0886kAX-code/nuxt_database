@@ -11,6 +11,9 @@ definePageMeta({
 
 import type { SystemSettings } from '~/types/api'
 
+// 使用 API composable
+const { put } = useApi()
+
 // 表单数据
 const settings = ref<SystemSettings>({
   siteName: '',
@@ -54,10 +57,7 @@ const handleSave = async () => {
   saveSuccess.value = false
 
   try {
-    const { data, error } = await useFetch('/api/settings', {
-      method: 'PUT',
-      body: settings.value
-    })
+    const { data, error } = await put('/api/settings', settings.value)
 
     if (error.value) {
       throw new Error(error.value.message || '保存设置失败')
@@ -70,10 +70,12 @@ const handleSave = async () => {
       setTimeout(() => {
         saveSuccess.value = false
       }, 3000)
+    } else {
+      throw new Error(data.value?.message || '保存设置失败')
     }
-  } catch (e) {
+  } catch (e: any) {
     console.error('保存设置失败:', e)
-    alert('保存失败，请重试')
+    alert(e.message || '保存失败，请重试')
   } finally {
     saving.value = false
   }

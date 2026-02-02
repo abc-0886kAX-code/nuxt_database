@@ -5,14 +5,34 @@
 
 export default defineEventHandler(async (event) => {
   // 不需要认证的路径（精确匹配）
-  const path = event.node.req.url || ''
-  const publicPaths = ['/api/login', '/api/register', '/api/settings', '/api/stats', '/api/system']
+  const fullPath = event.node.req.url || ''
+  // 去掉查询参数，只保留路径部分
+  const path = fullPath.split('?')[0]
+  // 获取HTTP方法（GET, POST, PUT, DELETE等）
+  const method = event.node.req.method?.toUpperCase() || 'GET'
 
-  // 精确匹配路径，避免 /api/login-logs 被 /api/login 误匹配
-  const isPublicPath = publicPaths.some(p => {
-    // 精确匹配或精确匹配带斜杠的路径
-    return path === p || path === p + '/'
-  })
+  // 公开路径配置：包含路径和允许的HTTP方法
+  // 如果方法不在数组中，则需要认证
+  const publicPathsWithMethods = {
+    '/api/login': ['GET', 'POST'],
+    '/api/register': ['POST'],
+    '/api/settings': ['GET'], // 只有GET是公开的，PUT/DELETE需要认证
+    '/api/stats': ['GET'],
+    '/api/system': ['GET']
+  }
+
+  // 检查是否为公开路径
+  let isPublicPath = false
+  for (const [publicPath, allowedMethods] of Object.entries(publicPathsWithMethods)) {
+    // 精确匹配路径
+    if (path === publicPath || path === publicPath + '/') {
+      // 检查HTTP方法是否在允许列表中
+      if (allowedMethods.includes(method)) {
+        isPublicPath = true
+        break
+      }
+    }
+  }
 
   if (isPublicPath) {
     return
@@ -37,7 +57,19 @@ export default defineEventHandler(async (event) => {
     // 解析Token
     let payload
     try {
-      payload = JSON.parse(Buffer.from(token, 'base64').toString())
+      const decoded = Buffer.from(token, 'base64').toString('utf-8')
+
+      // 尝试去除可能的空白字符和无效字符
+      // 找到第一个 { 和最后一个 } 之间的有效JSON部分
+      const startIndex = decoded.indexOf('{')
+      const endIndex = decoded.lastIndexOf('}')
+
+      if (startIndex === -1 || endIndex === -1 || startIndex >= endIndex) {
+        throw new Error('无效的Token格式：找不到有效的JSON')
+      }
+
+      const jsonStr = decoded.substring(startIndex, endIndex + 1)
+      payload = JSON.parse(jsonStr)
     } catch (error) {
       // Token 格式无效，不做处理，让 API 自己处理
       return
@@ -69,7 +101,6 @@ export default defineEventHandler(async (event) => {
     }
 
   } catch (error) {
-    console.error('认证中间件错误:', error)
     // 发生错误时不影响请求继续，让 API 自己处理
   }
 })

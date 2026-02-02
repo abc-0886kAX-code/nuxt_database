@@ -11,6 +11,9 @@ definePageMeta({
 
 import type { UserListItem, CreateUserParams, UpdateUserParams } from '~/types/api'
 
+// 使用 API composable
+const { get, post, put, patch, delete: del } = useApi()
+
 // 用户列表数据
 const users = ref<UserListItem[]>([])
 const loading = ref(false)
@@ -52,8 +55,7 @@ const errorMessage = ref('')
 const fetchUsers = async () => {
   loading.value = true
   try {
-    const { data, error } = await useFetch('/api/users', {
-      method: 'GET',
+    const { data, error } = await get('/api/users', {
       params: {
         page: currentPage.value,
         pageSize: pageSize.value,
@@ -137,10 +139,7 @@ const handleCreate = async () => {
   errorMessage.value = ''
 
   try {
-    const { data, error } = await useFetch('/api/users', {
-      method: 'POST',
-      body: formData.value
-    })
+    const { data, error } = await post('/api/users', formData.value)
 
     if (error.value) {
       errorMessage.value = error.value.message || '创建用户失败'
@@ -169,10 +168,7 @@ const handleUpdate = async () => {
   errorMessage.value = ''
 
   try {
-    const { data, error } = await useFetch(`/api/users/${currentUser.value.id}`, {
-      method: 'PUT',
-      body: formData.value
-    })
+    const { data, error } = await put(`/api/users/${currentUser.value.id}`, formData.value)
 
     if (error.value) {
       errorMessage.value = error.value.message || '更新用户失败'
@@ -200,9 +196,7 @@ const handleDelete = async () => {
   submitLoading.value = true
 
   try {
-    const { data, error } = await useFetch(`/api/users/${currentUser.value.id}`, {
-      method: 'DELETE'
-    })
+    const { data, error } = await del(`/api/users/${currentUser.value.id}`)
 
     if (error.value) {
       alert(error.value.message || '删除用户失败')
@@ -228,10 +222,7 @@ const toggleStatus = async (user: UserListItem) => {
   const newStatus = user.status === 'enabled' ? 'disabled' : 'enabled'
 
   try {
-    const { data, error } = await useFetch(`/api/users/${user.id}/status`, {
-      method: 'PATCH',
-      body: { status: newStatus }
-    })
+    const { data, error } = await patch(`/api/users/${user.id}/status`, { status: newStatus })
 
     if (error.value) {
       alert(error.value.message || '更新状态失败')

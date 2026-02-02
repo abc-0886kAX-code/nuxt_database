@@ -140,8 +140,13 @@ const handleRegister = async () => {
         if (data.value?.success) {
             // 注册成功，切换到登录页并提示
             errorMessage.value = '';
-            alert('注册成功！请登录');
+
+            // 显示成功提示，告知用户角色
+            alert(`注册成功！\n\n您的账号：${registerForm.value.username}\n角色：普通用户\n\n现在将跳转到登录页面`);
+
+            // 切换到登录标签
             switchTab('login');
+
             // 清空注册表单
             registerForm.value = {
                 username: '',
@@ -315,7 +320,8 @@ const handleRegister = async () => {
                         </button>
 
                         <div class="login-tips">
-                            <p>注册后即可使用系统功能</p>
+                            <p>💡 注册成功后，您的角色将为「普通用户」</p>
+                            <p>📧 请使用真实邮箱，便于后续账号找回</p>
                         </div>
                     </form>
                 </div>
@@ -655,6 +661,11 @@ const handleRegister = async () => {
         font-size: 13px;
         color: #6b7280;
         margin: 0;
+        line-height: 1.8;
+
+        &:not(:last-child) {
+            margin-bottom: 4px;
+        }
     }
 }
 

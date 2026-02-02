@@ -48,8 +48,6 @@ export default defineEventHandler(async (event) => {
     if (isPro) {
       // 生产环境：.output/server -> .output/public/uploads
       uploadsDir = path.join(process.cwd(), '..', 'files', 'uploads')
-      console.log(uploadsDir);
-
     } else {
       // 开发环境：项目根目录 -> public/uploads
       uploadsDir = path.join(process.cwd(), 'public', 'uploads')
